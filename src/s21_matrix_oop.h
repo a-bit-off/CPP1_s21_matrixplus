@@ -18,25 +18,23 @@ class S21Matrix {
   ~S21Matrix();
 
   void Print();  // ------------------------------------------------ delete it
-
   void CreateMatrix();
   void BringToZero();
-
-  int GetRows(){};
-  int GetColumns();
-
-  void SetRows(int rows);
-  void SetColumns(int columns);
-
   void ClearMatrix();
   void CopyMatrix(const S21Matrix& other);
 
-  // void output_matrix();
-  // void generarion_numbers();
+  int GetRows();
+  int GetColumns();
+  double **GetMatrix();
+  void SetRows(int rows);
+  void SetColumns(int columns);
+  void SetMatrix(double **matrix);
 
   bool EqMatrix(const S21Matrix& other);
+  void ManagerSumSub(const S21Matrix& other, bool flag);
   void SumMatrix(const S21Matrix& other);
   void SubMatrix(const S21Matrix& other);
+
   void MulNumber(const double num);
   void MulMatrix(const S21Matrix& other);
   S21Matrix Transpose();

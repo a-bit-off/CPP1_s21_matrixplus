@@ -13,9 +13,9 @@ S21Matrix::S21Matrix(int rows, int columns) {
   this->CreateMatrix();
 }
 
-S21Matrix::S21Matrix(const S21Matrix& other) { this->CopyMatrix(other); }
+S21Matrix::S21Matrix(const S21Matrix &other) { this->CopyMatrix(other); }
 
-S21Matrix::S21Matrix(S21Matrix&& other) {
+S21Matrix::S21Matrix(S21Matrix &&other) {
   this->BringToZero();
   this->CopyMatrix(other);
   other.ClearMatrix();
@@ -26,7 +26,7 @@ S21Matrix::~S21Matrix() { this->ClearMatrix(); }
 
 // helpers
 void S21Matrix::CreateMatrix() {
-  this->matrix_ = new double*[rows_]();
+  this->matrix_ = new double *[rows_]();
   for (int i = 0; i < rows_; i++) {
     this->matrix_[i] = new double[columns_]();
   }
@@ -48,7 +48,7 @@ void S21Matrix::Print() {
   cout << endl;
 }
 
-void S21Matrix::CopyMatrix(const S21Matrix& other) {
+void S21Matrix::CopyMatrix(const S21Matrix &other) {
   this->rows_ = other.rows_;
   this->columns_ = other.columns_;
   this->CreateMatrix();
@@ -74,13 +74,21 @@ void S21Matrix::ClearMatrix() {
 // Getters
 int S21Matrix::GetRows() { return this->rows_; }
 int S21Matrix::GetColumns() { return this->columns_; }
+double **S21Matrix::GetMatrix(){ return this->matrix_; }
 
 // Setters
 void S21Matrix::SetRows(int rows) { this->rows_ = rows; }
 void S21Matrix::SetColumns(int columns) { this->columns_ = columns; }
+void S21Matrix::SetMatrix(double **matrix) {
+  for (int i = 0; i < this->rows_; i++) {
+    for (int j = 0; j < this->columns_; j++) {
+      this->matrix_[i][j] = matrix[i][j];
+    }
+  }
+}
 
 // основные функции
-bool S21Matrix::EqMatrix(const S21Matrix& other) {
+bool S21Matrix::EqMatrix(const S21Matrix &other) {
   bool result = true;
   if (this->matrix_ == nullptr || other.matrix_ == nullptr) {
     result = false;
@@ -95,8 +103,37 @@ bool S21Matrix::EqMatrix(const S21Matrix& other) {
       }
     }
   }
-  other.Get return result;
+  return result;
 }
+
+void S21Matrix::ManagerSumSub(const S21Matrix& other, bool flag) {  
+  if (this->matrix_ == nullptr || other.matrix_ == nullptr) {
+    throw("Matrix is not empty !!!!");
+  }
+  if (this->rows_ != other.rows_ || this->columns_ != other.columns_) {
+    throw("Matrix sizes are not equal !!!!");
+  }
+  for (int i = 0; i < this->rows_; i++) {
+    for (int j = 0; j < this->columns_; j++) {
+      if (flag) {
+        this->matrix_[i][j] += other.matrix_[i][j];
+      } else {
+        this->matrix_[i][j] -= other.matrix_[i][j];
+      }
+    }
+  }
+}
+
+void S21Matrix::SumMatrix(const S21Matrix& other) {
+  this->ManagerSumSub(other, true);
+}
+
+void S21Matrix::SubMatrix(const S21Matrix& other) {
+  this->ManagerSumSub(other, false);
+}
+
+
+
 
 int main() {
   // create test +
@@ -118,7 +155,23 @@ int main() {
   // m3.~S21Matrix();
   // cout << "m3 = " << m3.GetRows() << " " << m3.GetColumns() << endl;
 
-  S21Matrierfex m1(4, 4);
-  S21Matrix m2;
-  cout << m1.EqMatrix(m2) <<
+  S21Matrix m1(3, 3);
+  S21Matrix m2(3, 3);
+  double** matrix1 = new double *[3]();
+  for (int i = 0; i < 3; i++) {
+    matrix1[i] = new double[3]();
+  }
+  matrix1[0][0] = 5;
+
+  double** matrix2 = new double *[3]();
+  for (int i = 0; i < 3; i++) {
+    matrix2[i] = new double[3]();
+  }
+  matrix2[0][0] = 6;
+  m1.SetMatrix(matrix1);
+  m2.SetMatrix(matrix2);
+  m1.SubMatrix(m2);
+  
+  std::cout << "sum = " << m1.GetMatrix()[0][0] << endl;
+  return 0;
 }
