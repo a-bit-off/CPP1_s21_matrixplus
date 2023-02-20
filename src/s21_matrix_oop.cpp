@@ -228,7 +228,7 @@ S21Matrix S21Matrix::Transpose() {
   } else if (this->rows_ < 1 || this->columns_ < 1) {
     throw("Matrix size is not correct !!!");
   }
-  S21Matrix result(this->rows_, this->columns_);
+  S21Matrix result(this->columns_, this->rows_);
   for (int i = 0; i < this->rows_; i++) {
     for (int j = 0; j < this->columns_; j++) {
       result.matrix_[j][i] = this->matrix_[i][j];
