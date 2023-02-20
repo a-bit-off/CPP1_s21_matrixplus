@@ -1,14 +1,8 @@
 .PHONY: all  clean test  s21_matrix_oop.a objects build_lib rebuild clean_obj
 CC=gcc
 CFLAGS=-Wall -Werror -Wextra -lstdc++
-TST_CFLAGS:= -g $(STDFLAGS) -g
-GCOV_FLAGS?=-fprofile-arcs -ftest-coverage
-LINUX_FLAGS=-lsubunit -lrt -lpthread -lm
-LIBS=-lcheck
-VALGRIND_FLAGS=--trace-children=yes --track-fds=yes --track-origins=yes --leak-check=full --show-leak-kinds=all --verbose
 
-
-all: test
+all: test gcov_report
 
 s21_matrix_oop.a: build_lib clean_obj
 
@@ -17,34 +11,32 @@ build_lib: objects
 	@ranlib s21_matrix_oop.a
 
 objects:
-	@$(CC) $(CFLAGS) -c s21_matrix_oop.cpp
+	@$(CC) $(CFLAGS) -c s21_matrix_oop.cc
 
-test: s21_matrix_oop.a test.cpp
-	@$(CC) $(CFLAGS) -lgtest test.cpp s21_matrix_oop.a -o test
-	@./test
+test: s21_matrix_oop.a unit_tests.cc
+	@$(CC) $(CFLAGS) -lgtest unit_tests.cc s21_matrix_oop.a -o unit_tests
+	@./unit_tests
 
 check:
 	# cp ../materials/linters/CPPLINT.cfg .
-	# python3 ../materials/linters/cpplint.py --extensions=cpp *.cpp
-	@CK_FORK=no leaks --atExit -- ./test
+	# python3 ../materials/linters/cpplint.py --extensions=cpp *.cc
+	@CK_FORK=no leaks --atExit -- ./unit_tests
 
 clean_obj:
 	@rm -rf *.o
 
 clean:
-	@rm -rf *.a ./test CPPLINT.cfg
-	# @rm -rf ./test
-	# @rm -rf CPPLINT.cfg
-
-gcov_report:
-ifeq ($(OS), Darwin)
-	$(CC) $(CFLAGS) $(GCOV_FLAGS) ${TEST_SRC} ${SRC} -o test $(LIBS)
-
-endif
-	./test
-	lcov -t "stest" -o s21_test.info -c -d .
-	genhtml -o report s21_test.info
-	$(OPEN_CMD) ./report/index.html
-
+	rm -rf *.o *.out s21_matrix_oop.a unit_test
+	rm -rf *.gcda *.gcno report gcov_report.* gcov_report *.info
 
 rebuild: clean all
+
+
+gcov_report: clean
+	gcc  --coverage unit_tests.cc s21_matrix_oop.cc -o gcov_report -lgtest -lstdc++
+	./gcov_report
+	lcov -t "stest" -o s21_test.info -c -d .
+	genhtml -o report s21_test.info
+	open ./report/index.html
+
+

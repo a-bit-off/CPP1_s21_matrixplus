@@ -10,14 +10,6 @@ class S21Matrix {
   int columns_;
   double** matrix_;
 
- public:
-  // Constructors and destructor
-  S21Matrix();
-  S21Matrix(int rows, int columns);
-  S21Matrix(const S21Matrix& other);
-  S21Matrix(S21Matrix&& other);
-  ~S21Matrix();
-
   // Secondary functions
   void CreateMatrix();
   void BringToZero();
@@ -25,6 +17,14 @@ class S21Matrix {
   void CopyMatrix(const S21Matrix& other);
   void Minor(S21Matrix& result, int rows, int columns);
   void ManagerSumSub(const S21Matrix& other, bool flag);
+
+ public:
+  // Constructors and destructor
+  S21Matrix();
+  S21Matrix(int rows, int columns);
+  S21Matrix(const S21Matrix& other);
+  S21Matrix(S21Matrix&& other);
+  ~S21Matrix();
 
   // Getters and setters
   int GetRows();

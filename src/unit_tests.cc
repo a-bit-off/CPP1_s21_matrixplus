@@ -2,13 +2,154 @@
 
 #include "s21_matrix_oop.h"
 
-void PrintMatrix(double** m, int r, int c) {
-  for (int i = 0; i < r; i++) {
-    for (int j = 0; j < c; j++) {
-      std::cout << m[i][j] << " ";
-    }
-    std::cout << std::endl;
-  }
+// check throw
+TEST(Test, throw_constructor_1) { EXPECT_ANY_THROW(S21Matrix A(0, 5)); }
+
+TEST(Test, throw_SetRows_1) {
+  S21Matrix A;
+  EXPECT_ANY_THROW(A.SetRows(-1));
+}
+
+TEST(Test, throw_SetColumns_1) {
+  S21Matrix A;
+  EXPECT_ANY_THROW(A.SetColumns(-1));
+}
+
+TEST(Test, throw_EqMatrix_1) {
+  S21Matrix A;
+  S21Matrix B;
+  EXPECT_ANY_THROW(A.EqMatrix(B));
+}
+
+TEST(Test, throw_EqMatrix_2) {
+  S21Matrix A;
+  S21Matrix B(1, 1);
+
+  EXPECT_ANY_THROW(A.EqMatrix(B));
+}
+
+TEST(Test, throw_EqMatrix_3) {
+  S21Matrix A(1, 4);
+  S21Matrix B(3, 4);
+  EXPECT_ANY_THROW(A.EqMatrix(B));
+}
+
+TEST(Test, throw_SumMatrix_1) {
+  S21Matrix A;
+  S21Matrix B;
+  EXPECT_ANY_THROW(A.SumMatrix(B));
+}
+
+TEST(Test, throw_SumMatrix_2) {
+  S21Matrix A;
+  S21Matrix B(1, 1);
+  EXPECT_ANY_THROW(A.SumMatrix(B));
+}
+
+TEST(Test, throw_SumMatrix_3) {
+  S21Matrix A(1, 4);
+  S21Matrix B(3, 4);
+  EXPECT_ANY_THROW(A.SumMatrix(B));
+}
+
+TEST(Test, throw_SubMatrix_1) {
+  S21Matrix A;
+  S21Matrix B;
+  EXPECT_ANY_THROW(A.SubMatrix(B));
+}
+
+TEST(Test, throw_SubMatrix_2) {
+  S21Matrix A;
+  S21Matrix B(1, 1);
+  EXPECT_ANY_THROW(A.SubMatrix(B));
+}
+
+TEST(Test, throw_SubMatrix_3) {
+  S21Matrix A(1, 4);
+  S21Matrix B(3, 4);
+  EXPECT_ANY_THROW(A.SubMatrix(B));
+}
+
+TEST(Test, throw_MulMatrix_1) {
+  S21Matrix A;
+  S21Matrix B;
+  EXPECT_ANY_THROW(A.MulMatrix(B));
+}
+
+TEST(Test, throw_MulMatrix_2) {
+  S21Matrix A;
+  S21Matrix B(1, 1);
+  EXPECT_ANY_THROW(A.MulMatrix(B));
+}
+
+TEST(Test, throw_MulMatrix_3) {
+  S21Matrix A(1, 2);
+  S21Matrix B(1, 2);
+  EXPECT_ANY_THROW(A.MulMatrix(B));
+}
+
+TEST(Test, throw_MulNumber_1) {
+  S21Matrix A;
+  const double num = 5;
+  EXPECT_ANY_THROW(A.MulNumber(num));
+}
+
+TEST(Test, throw_Determinant_1) {
+  S21Matrix A;
+  EXPECT_ANY_THROW(A.Determinant());
+}
+
+TEST(Test, throw_Determinant_2) {
+  S21Matrix A(3, 4);
+  EXPECT_ANY_THROW(A.Determinant());
+}
+
+TEST(Test, throw_Transpose_1) {
+  S21Matrix A;
+  EXPECT_ANY_THROW(A.Transpose());
+}
+
+TEST(Test, throw_CalcComplements_1) {
+  S21Matrix A;
+  EXPECT_ANY_THROW(A.CalcComplements());
+}
+
+TEST(Test, throw_CalcComplements_2) {
+  S21Matrix A(2, 3);
+  EXPECT_ANY_THROW(A.CalcComplements());
+}
+
+TEST(Test, throw_InverseMatrix_1) {
+  S21Matrix A(2, 3);
+  EXPECT_ANY_THROW(A.InverseMatrix());
+}
+
+TEST(Test, throw_InverseMatrix_2) {
+  S21Matrix A(3, 3);
+  A(0, 0) = 1;
+  A(0, 1) = 2;
+  A(0, 2) = 3;
+  A(1, 0) = 4;
+  A(1, 1) = 5;
+  A(1, 2) = 6;
+  A(2, 0) = 7;
+  A(2, 1) = 8;
+  A(2, 2) = 9;
+  EXPECT_ANY_THROW(A.InverseMatrix());
+}
+
+TEST(Test, throw_InverseMatrix_3) {
+  S21Matrix A(3, 3);
+  A(0, 0) = 1;
+  A(0, 1) = 2;
+  A(0, 2) = 3;
+  A(1, 0) = 4;
+  A(1, 1) = 5;
+  A(1, 2) = 6;
+  A(2, 0) = 7;
+  A(2, 1) = 8;
+  A(2, 2) = 9;
+  EXPECT_ANY_THROW(A.InverseMatrix());
 }
 
 TEST(Test, not_eq_matrix) {
@@ -229,9 +370,77 @@ TEST(Test, mul_operator_num_with_eq) {
 }
 
 TEST(Test, mul_matrix_throw) {
-  S21Matrix A(3, 1);
+  S21Matrix A(3, 3);
+  A(0, 0) = 2;
+  A(0, 1) = 4;
+  A(0, 2) = 6;
+  A(1, 0) = 2;
+  A(1, 1) = 10;
+  A(1, 2) = 12;
+  A(2, 0) = 95;
+  A(2, 1) = 94;
+  A(2, 2) = 18;
+
   S21Matrix B(3, 3);
-  EXPECT_ANY_THROW(A * B);
+  B(0, 0) = 2;
+  B(0, 1) = 4;
+  B(0, 2) = 6;
+  B(1, 0) = 2;
+  B(1, 1) = 10;
+  B(1, 2) = 12;
+  B(2, 0) = 95;
+  B(2, 1) = 94;
+  B(2, 2) = 18;
+
+  S21Matrix res(3, 3);
+  res(0, 0) = 582;
+  res(0, 1) = 612;
+  res(0, 2) = 168;
+  res(1, 0) = 1164;
+  res(1, 1) = 1236;
+  res(1, 2) = 348;
+  res(2, 0) = 2088;
+  res(2, 1) = 3012;
+  res(2, 2) = 2022;
+
+  EXPECT_EQ(1, (A * B) == res);
+}
+
+TEST(Test, mul_matrix_throw_2) {
+  S21Matrix A(3, 3);
+  A(0, 0) = 2;
+  A(0, 1) = 4;
+  A(0, 2) = 6;
+  A(1, 0) = 2;
+  A(1, 1) = 10;
+  A(1, 2) = 12;
+  A(2, 0) = 95;
+  A(2, 1) = 94;
+  A(2, 2) = 18;
+
+  S21Matrix B(3, 3);
+  B(0, 0) = 2;
+  B(0, 1) = 4;
+  B(0, 2) = 6;
+  B(1, 0) = 2;
+  B(1, 1) = 10;
+  B(1, 2) = 12;
+  B(2, 0) = 95;
+  B(2, 1) = 94;
+  B(2, 2) = 18;
+
+  S21Matrix res(3, 3);
+  res(0, 0) = 582;
+  res(0, 1) = 612;
+  res(0, 2) = 168;
+  res(1, 0) = 1164;
+  res(1, 1) = 1236;
+  res(1, 2) = 348;
+  res(2, 0) = 2088;
+  res(2, 1) = 3012;
+  res(2, 2) = 2022;
+  A *= B;
+  EXPECT_EQ(1, A == res);
 }
 
 TEST(Test, operation_func) {
