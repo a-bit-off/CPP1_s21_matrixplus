@@ -17,7 +17,7 @@ test: s21_matrix_oop.a unit_tests.cc
 	@$(CC) $(CFLAGS) -lgtest unit_tests.cc s21_matrix_oop.a -o unit_tests
 	@./unit_tests
 
-check:
+check: test
 	# cp ../materials/linters/CPPLINT.cfg .
 	# python3 ../materials/linters/cpplint.py --extensions=cpp *.cc
 	@CK_FORK=no leaks --atExit -- ./unit_tests
