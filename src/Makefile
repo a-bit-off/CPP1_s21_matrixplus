@@ -22,15 +22,11 @@ check:
 	# python3 ../materials/linters/cpplint.py --extensions=cpp *.cc
 	@CK_FORK=no leaks --atExit -- ./unit_tests
 
-clean_obj:
-	@rm -rf *.o
-
 clean:
-	rm -rf *.o *.out s21_matrix_oop.a unit_test
+	rm -rf *.o *.out s21_matrix_oop.a unit_tests
 	rm -rf *.gcda *.gcno report gcov_report.* gcov_report *.info
 
 rebuild: clean all
-
 
 gcov_report: clean
 	gcc  --coverage unit_tests.cc s21_matrix_oop.cc -o gcov_report -lgtest -lstdc++

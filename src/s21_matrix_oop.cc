@@ -1,7 +1,6 @@
 #include "s21_matrix_oop.h"
 using namespace std;
 
-// Constructors and destructor
 S21Matrix::S21Matrix() { this->BringToZero(); }
 
 S21Matrix::S21Matrix(int rows, int columns) {
@@ -22,7 +21,6 @@ S21Matrix::S21Matrix(S21Matrix &&other) {
 
 S21Matrix::~S21Matrix() { this->ClearMatrix(); }
 
-// Secondary functions
 void S21Matrix::CreateMatrix() {
   this->matrix_ = new double *[rows_]();
   for (int i = 0; i < rows_; i++) {
@@ -73,12 +71,9 @@ void S21Matrix::Minor(S21Matrix &result, int rows, int columns) {
   }
 }
 
-// Getters and setters
 int S21Matrix::GetRows() { return this->rows_; }
 
 int S21Matrix::GetColumns() { return this->columns_; }
-
-double **S21Matrix::GetMatrix() { return this->matrix_; }
 
 void S21Matrix::SetRows(int rows) {
   if (rows < 1) {
@@ -114,7 +109,6 @@ void S21Matrix::SetColumns(int columns) {
   *this = tmp;
 }
 
-// Main functions
 bool S21Matrix::EqMatrix(const S21Matrix &other) {
   bool result = true;
   if (this->matrix_ == nullptr || other.matrix_ == nullptr) {
@@ -127,7 +121,7 @@ bool S21Matrix::EqMatrix(const S21Matrix &other) {
   }
   for (int i = 0; i < this->rows_ && result; i++) {
     for (int j = 0; j < this->columns_ && result; j++) {
-      if (fabs(this->matrix_[i][j] - other.matrix_[i][j]) > 1e-7) {
+      if (fabs(this->matrix_[i][j] - other.matrix_[i][j]) >= 1e-7) {
         result = false;
       }
     }
@@ -280,7 +274,6 @@ S21Matrix S21Matrix::InverseMatrix() {
   return result;
 }
 
-// Overload operators
 S21Matrix S21Matrix::operator+(const S21Matrix &other) {
   S21Matrix result(*this);
   result.SumMatrix(other);
