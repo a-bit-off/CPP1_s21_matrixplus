@@ -10,14 +10,6 @@ class S21Matrix {
   int columns_;
   double** matrix_;
 
-  // Helpers func
-  void CreateMatrix();
-  void BringToZero();
-  void ClearMatrix();
-  void CopyMatrix(const S21Matrix& other);
-  void Minor(S21Matrix& result, int rows, int columns);
-  void ManagerSumSub(const S21Matrix& other, bool flag);
-
  public:
   // Constructors and destructor
   S21Matrix();
@@ -26,17 +18,22 @@ class S21Matrix {
   S21Matrix(S21Matrix&& other);
   ~S21Matrix();
 
-  // Getters
-  int GetRows() { return this->rows_; }
-  int GetColumns() { return this->columns_; }
-  double** GetMatrix() { return this->matrix_; }
+  // Secondary functions
+  void CreateMatrix();
+  void BringToZero();
+  void ClearMatrix();
+  void CopyMatrix(const S21Matrix& other);
+  void Minor(S21Matrix& result, int rows, int columns);
+  void ManagerSumSub(const S21Matrix& other, bool flag);
 
-  // Setters
-  void SetRows(int rows) { this->rows_ = rows; }
-  void SetColumns(int columns) { this->columns_ = columns; }
-  void SetElement(int i, int j, double value) { this->matrix_[i][j] = value; }
+  // Getters and setters
+  int GetRows();
+  int GetColumns();
+  double** GetMatrix();
+  void SetRows(int rows);
+  void SetColumns(int columns);
 
-  // main functions
+  // Main functions
   bool EqMatrix(const S21Matrix& other);
   void SumMatrix(const S21Matrix& other);
   void SubMatrix(const S21Matrix& other);
@@ -47,7 +44,7 @@ class S21Matrix {
   S21Matrix CalcComplements();
   S21Matrix InverseMatrix();
 
-  // overload operators
+  // Overload operators
   S21Matrix operator+(const S21Matrix& other);
   S21Matrix operator-(const S21Matrix& other);
   S21Matrix operator*(const S21Matrix& other);
