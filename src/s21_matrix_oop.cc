@@ -5,7 +5,7 @@ S21Matrix::S21Matrix() { this->BringToZero(); }
 
 S21Matrix::S21Matrix(int rows, int columns) {
   if (rows < 1 || columns < 1) {
-    throw("Rows or Columns less than 1 !!!");
+    throw std::length_error("Rows or Columns less than 1 !!!");
   }
   this->rows_ = rows;
   this->columns_ = columns;
@@ -22,6 +22,9 @@ S21Matrix::S21Matrix(S21Matrix &&other) {
 S21Matrix::~S21Matrix() { this->ClearMatrix(); }
 
 void S21Matrix::CreateMatrix() {
+  if (this->rows_ < 1 || this->columns_ < 1) {
+    throw std::length_error("Rows or Columns less than 1 !!!");
+  }
   this->matrix_ = new double *[rows_]();
   for (int i = 0; i < rows_; i++) {
     this->matrix_[i] = new double[columns_]();
@@ -77,7 +80,7 @@ int S21Matrix::GetColumns() { return this->columns_; }
 
 void S21Matrix::SetRows(int rows) {
   if (rows < 1) {
-    throw("Rows is less 1 !!!");
+    throw std::length_error("Rows is less 1 !!!");
   }
   S21Matrix tmp(rows, this->columns_);
   int less_rows = rows;
@@ -94,7 +97,7 @@ void S21Matrix::SetRows(int rows) {
 
 void S21Matrix::SetColumns(int columns) {
   if (columns < 1) {
-    throw("Columns is less 1 !!!");
+    throw std::length_error("Columns is less 1 !!!");
   }
   S21Matrix tmp(this->rows_, columns);
   int less_columns = columns;
@@ -112,12 +115,12 @@ void S21Matrix::SetColumns(int columns) {
 bool S21Matrix::EqMatrix(const S21Matrix &other) {
   bool result = true;
   if (this->matrix_ == nullptr || other.matrix_ == nullptr) {
-    throw("Matrix is not empty !!!");
+    throw std::length_error("Matrix is not empty !!!");
   } else if ((this->rows_ < 1 || this->columns_ < 1) ||
              (other.rows_ < 1 || other.columns_ < 1)) {
-    throw("Matrix size is not correct !!!");
+    throw std::length_error("Matrix size is not correct !!!");
   } else if (this->rows_ != other.rows_ || this->columns_ != other.columns_) {
-    throw("Matrix size is not correct !!!");
+    throw std::length_error("Matrix size is not correct !!!");
   }
   for (int i = 0; i < this->rows_ && result; i++) {
     for (int j = 0; j < this->columns_ && result; j++) {
@@ -131,12 +134,12 @@ bool S21Matrix::EqMatrix(const S21Matrix &other) {
 
 void S21Matrix::ManagerSumSub(const S21Matrix &other, bool flag) {
   if (this->matrix_ == nullptr || other.matrix_ == nullptr) {
-    throw("Matrix is not empty !!!");
+    throw std::length_error("Matrix is not empty !!!");
   } else if ((this->rows_ < 1 || this->columns_ < 1) ||
              (other.rows_ < 1 || other.columns_ < 1)) {
-    throw("Matrix size is not correct !!!");
+    throw std::length_error("Matrix size is not correct !!!");
   } else if (this->rows_ != other.rows_ || this->columns_ != other.columns_) {
-    throw("Matrix sizes are not equal !!!");
+    throw std::length_error("Matrix sizes are not equal !!!");
   }
   for (int i = 0; i < this->rows_; i++) {
     for (int j = 0; j < this->columns_; j++) {
@@ -159,9 +162,9 @@ void S21Matrix::SubMatrix(const S21Matrix &other) {
 
 void S21Matrix::MulNumber(const double num) {
   if (this->matrix_ == nullptr) {
-    throw("Matrix is not empty !!!");
+    throw std::length_error("Matrix is not empty !!!");
   } else if (this->rows_ < 1 || this->columns_ < 1) {
-    throw("Matrix size is not correct !!!");
+    throw std::length_error("Matrix size is not correct !!!");
   }
   for (int i = 0; i < this->rows_; i++) {
     for (int j = 0; j < this->columns_; j++) {
@@ -172,12 +175,12 @@ void S21Matrix::MulNumber(const double num) {
 
 void S21Matrix::MulMatrix(const S21Matrix &other) {
   if (this->matrix_ == nullptr || other.matrix_ == nullptr) {
-    throw("Matrix is not empty !!!");
+    throw std::length_error("Matrix is not empty !!!");
   } else if ((this->rows_ < 1 || this->columns_ < 1) ||
              (other.rows_ < 1 || other.columns_ < 1)) {
-    throw("Matrix size is not correct !!!");
+    throw std::length_error("Matrix size is not correct !!!");
   } else if (this->columns_ != other.rows_) {
-    throw("Matrix sizes are not equal !!!");
+    throw std::length_error("Matrix sizes are not equal !!!");
   }
   S21Matrix result(this->rows_, other.columns_);
   for (int i = 0; i < this->rows_; i++) {
@@ -192,11 +195,11 @@ void S21Matrix::MulMatrix(const S21Matrix &other) {
 
 double S21Matrix::Determinant() {
   if (this->matrix_ == nullptr) {
-    throw("Matrix is not empty !!!");
+    throw std::length_error("Matrix is not empty !!!");
   } else if (this->rows_ < 1 || this->columns_ < 1) {
-    throw("Matrix size is not correct !!!");
+    throw std::length_error("Matrix size is not correct !!!");
   } else if (this->rows_ != this->columns_) {
-    throw("Matrix rows and columns are not equal !!!");
+    throw std::length_error("Matrix rows and columns are not equal !!!");
   }
   double result = 0;
   if (this->rows_ == 1) {
@@ -218,9 +221,9 @@ double S21Matrix::Determinant() {
 
 S21Matrix S21Matrix::Transpose() {
   if (this->matrix_ == nullptr) {
-    throw("Matrix is not empty !!!");
+    throw std::length_error("Matrix is not empty !!!");
   } else if (this->rows_ < 1 || this->columns_ < 1) {
-    throw("Matrix size is not correct !!!");
+    throw std::length_error("Matrix size is not correct !!!");
   }
   S21Matrix result(this->columns_, this->rows_);
   for (int i = 0; i < this->rows_; i++) {
@@ -233,11 +236,11 @@ S21Matrix S21Matrix::Transpose() {
 
 S21Matrix S21Matrix::CalcComplements() {
   if (this->matrix_ == nullptr) {
-    throw("Matrix is not empty !!!");
+    throw std::length_error("Matrix is not empty !!!");
   } else if (this->rows_ < 1 || this->columns_ < 1) {
-    throw("Matrix size is not correct !!!");
+    throw std::length_error("Matrix size is not correct !!!");
   } else if (this->rows_ != this->columns_) {
-    throw("Matrix rows and columns are not equal !!!");
+    throw std::length_error("Matrix rows and columns are not equal !!!");
   }
   S21Matrix result(this->rows_, this->columns_);
   S21Matrix minor(this->rows_ - 1, this->columns_ - 1);
@@ -252,15 +255,15 @@ S21Matrix S21Matrix::CalcComplements() {
 
 S21Matrix S21Matrix::InverseMatrix() {
   if (this->matrix_ == nullptr) {
-    throw("Matrix is not empty !!!");
+    throw std::length_error("Matrix is not empty !!!");
   } else if (this->rows_ < 1 || this->columns_ < 1) {
-    throw("Matrix size is not correct !!!");
+    throw std::length_error("Matrix size is not correct !!!");
   } else if (this->rows_ != this->columns_) {
-    throw("Matrix rows and columns are not equal !!!");
+    throw std::length_error("Matrix rows and columns are not equal !!!");
   }
   double det = this->Determinant();
   if (det < 1e-7) {
-    throw("Determinant equal to nil !!!");
+    throw std::length_error("Determinant equal to nil !!!");
   }
   S21Matrix result(this->rows_, this->columns_);
   S21Matrix tmp(this->rows_, this->columns_);
@@ -330,7 +333,7 @@ bool S21Matrix::operator==(const S21Matrix &other) {
 
 double &S21Matrix::operator()(int i, int j) {
   if (i >= this->rows_ || j >= this->columns_ || i < 0 || j < 0) {
-    throw("Index is not correct !!!");
+    throw std::length_error("Index is not correct !!!");
   }
   return this->matrix_[i][j];
 }
