@@ -18,8 +18,6 @@ test: s21_matrix_oop.a unit_tests.cc
 	@./unit_tests
 
 check: test
-	# cp ../materials/linters/CPPLINT.cfg .
-	# python3 ../materials/linters/cpplint.py --extensions=cpp *.cc
 	@CK_FORK=no leaks --atExit -- ./unit_tests
 
 clean:
